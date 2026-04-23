@@ -35,6 +35,11 @@ class Transaction extends Model
         ];
     }
 
+    protected $appends = [
+        'is_overdue',
+        'overdue_days',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -48,5 +53,23 @@ class Transaction extends Model
     public function officer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'officer_id');
+    }
+
+    public function getIsOverdueAttribute(): bool
+    {
+        if ($this->status !== 'dipinjam') {
+            return false;
+        }
+
+        return $this->return_date !== null && $this->return_date->isPast();
+    }
+
+    public function getOverdueDaysAttribute(): int
+    {
+        if (! $this->is_overdue) {
+            return 0;
+        }
+
+        return max(1, $this->return_date->diffInDays(now()));
     }
 }

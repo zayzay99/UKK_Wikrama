@@ -116,8 +116,13 @@ class TransactionController extends Controller {
         $itemSummary = Item::orderBy('name')->get();
         $penaltyRates = $this->getPenaltyRates();
         $totalFines = $reports->sum('fine_amount');
+        $overdueReports = $reports->filter(fn (Transaction $transaction) => $transaction->is_overdue);
+        $overdueCount = $overdueReports->count();
+        $overdueFineProjection = $overdueReports->sum(function (Transaction $transaction) use ($penaltyRates) {
+            return $transaction->overdue_days * $penaltyRates['telat'];
+        });
 
-        return view('admin.reports.index', compact('reports', 'statusCounts', 'itemSummary', 'penaltyRates', 'totalFines')); // Mengarahkan ke folder admin/reports
+        return view('admin.reports.index', compact('reports', 'statusCounts', 'itemSummary', 'penaltyRates', 'totalFines', 'overdueCount', 'overdueFineProjection')); // Mengarahkan ke folder admin/reports
     }
 
     public function updatePenaltySettings(Request $request)

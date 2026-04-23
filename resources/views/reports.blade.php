@@ -29,7 +29,7 @@
             </div>
         @endif
 
-        <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-5">
+        <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-6">
             <div class="rounded-xl bg-white p-5 shadow">
                 <p class="text-sm text-gray-500">Sedang Dipinjam</p>
                 <p class="mt-2 text-3xl font-bold text-amber-600">{{ $statusCounts['dipinjam'] }}</p>
@@ -50,7 +50,20 @@
                 <p class="text-sm text-gray-500">Total Denda</p>
                 <p class="mt-2 text-3xl font-bold text-slate-900">Rp {{ number_format($totalFines, 0, ',', '.') }}</p>
             </div>
+            <div class="rounded-xl border-2 border-rose-300 bg-rose-50 p-5 shadow">
+                <p class="text-sm font-semibold text-rose-700">Alarm Due Date</p>
+                <p class="mt-2 text-3xl font-bold text-rose-700">{{ $overdueCount }}</p>
+                <p class="mt-1 text-xs text-rose-600">Estimasi denda telat: Rp {{ number_format($overdueFineProjection, 0, ',', '.') }}</p>
+            </div>
         </div>
+
+        @if($overdueCount > 0)
+            <div class="mb-6 rounded-2xl border border-rose-300 bg-rose-50 p-5 shadow">
+                <p class="text-sm font-bold uppercase tracking-wide text-rose-700">Alarm Merah</p>
+                <p class="mt-1 text-lg font-semibold text-rose-800">{{ $overdueCount }} transaksi sudah melewati tanggal pengembalian.</p>
+                <p class="mt-1 text-sm text-rose-700">Baris yang terlambat ditandai merah pada tabel report di bawah.</p>
+            </div>
+        @endif
 
         <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr,1.4fr]">
             <div class="rounded-2xl bg-white p-6 shadow">
@@ -108,11 +121,14 @@
                 </thead>
                 <tbody>
                     @forelse($reports as $report)
-                    <tr class="border-b hover:bg-gray-50">
+                    <tr class="border-b {{ $report->is_overdue ? 'bg-rose-50 hover:bg-rose-100' : 'hover:bg-gray-50' }}">
                         <td class="p-3">
                             <span class="text-xs block text-gray-500 font-bold uppercase">Pinjam: {{ $report->borrow_date->format('d M Y') }}</span>
-                            <span class="text-xs block text-blue-600">Batas: {{ $report->return_date->format('d M Y') }}</span>
+                            <span class="text-xs block {{ $report->is_overdue ? 'font-bold text-rose-700' : 'text-blue-600' }}">Batas: {{ $report->return_date->format('d M Y') }}</span>
                             <span class="text-xs block text-slate-500">Aktual: {{ $report->actual_return_date ? $report->actual_return_date->format('d M Y') : '-' }}</span>
+                            @if($report->is_overdue)
+                                <span class="mt-1 inline-block rounded-full bg-rose-600 px-2 py-1 text-[10px] font-bold uppercase text-white">Terlambat {{ $report->overdue_days }} hari</span>
+                            @endif
                         </td>
                         <td class="p-3 font-medium">{{ $report->user->name }}</td>
                         <td class="p-3 text-sm text-slate-600">
@@ -124,6 +140,9 @@
                             <span class="font-semibold {{ $report->status === 'kembali' ? 'text-green-600' : ($report->status === 'rusak' ? 'text-orange-600' : ($report->status === 'hilang' ? 'text-red-600' : 'text-gray-500')) }}">
                                 {{ ucfirst($report->fine_reason === 'telat' ? 'telat' : $report->status) }}
                             </span>
+                            @if($report->is_overdue)
+                                <br><span class="text-xs font-semibold text-rose-700">Due date lewat</span>
+                            @endif
                         </td>
                         <td class="p-3 text-sm text-slate-600">
                             @if($report->fine_amount > 0)
