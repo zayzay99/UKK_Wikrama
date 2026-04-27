@@ -13,11 +13,7 @@
             <p class="text-gray-500">Silahkan masuk ke akun Anda</p>
         </div>
 
-        @if($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                {{ $errors->first() }}
-            </div>
-        @endif
+        @include('partials.flash-alerts')
 
         <form action="{{ url('/login') }}" method="POST">
             @csrf

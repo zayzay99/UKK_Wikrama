@@ -12,7 +12,6 @@
                 <a href="{{ route('reports.index') }}" class="rounded-lg px-3 py-2 text-sm {{ request()->routeIs('reports.index') ? 'bg-white text-slate-900' : 'bg-slate-800 text-white hover:bg-slate-700' }}">Laporan</a>
                 <a href="{{ route('items.index') }}" class="rounded-lg px-3 py-2 text-sm {{ request()->routeIs('items.*') ? 'bg-white text-slate-900' : 'bg-slate-800 text-white hover:bg-slate-700' }}">Data Barang</a>
                 <a href="{{ route('users.index') }}" class="rounded-lg px-3 py-2 text-sm {{ request()->routeIs('users.*') ? 'bg-white text-slate-900' : 'bg-slate-800 text-white hover:bg-slate-700' }}">Data User</a>
-                <a href="{{ route('transactions.index') }}" class="rounded-lg bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-300">Panel Petugas</a>
             @endif
             @if(Auth::user()->role === 'petugas')
                 <a href="{{ route('transactions.index') }}" class="rounded-lg px-3 py-2 text-sm {{ request()->routeIs('transactions.*') ? 'bg-white text-slate-900' : 'bg-slate-800 text-white hover:bg-slate-700' }}">Transaksi</a>

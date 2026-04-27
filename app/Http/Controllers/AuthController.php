@@ -23,9 +23,9 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             // Redirect berdasarkan role
-            if (Auth::user()->role === 'admin') return redirect()->route('reports.index');
-            if (Auth::user()->role === 'petugas') return redirect()->route('transactions.index');
-            return redirect()->route('siswa.history');
+            if (Auth::user()->role === 'admin') return redirect()->route('reports.index')->with('success', 'Login berhasil. Selamat datang, Admin.');
+            if (Auth::user()->role === 'petugas') return redirect()->route('transactions.index')->with('success', 'Login berhasil. Selamat bekerja, Petugas.');
+            return redirect()->route('siswa.history')->with('success', 'Login berhasil. Selamat datang di portal siswa.');
         }
 
         return back()->withErrors(['email' => 'Email atau password salah.']);
@@ -38,6 +38,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'Logout berhasil. Sampai jumpa.');
     }
 }

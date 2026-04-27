@@ -16,6 +16,7 @@ Route::middleware(['auth'])->group(function () {
     
     // Akses Admin: Input Data, Transaksi, Report
     Route::middleware(['role:admin'])->group(function () {
+        Route::get('/items/{item}/print', [ItemController::class, 'print'])->name('items.print');
         Route::resource('items', ItemController::class); // Input Alat/Buku
         Route::resource('users', UserController::class)->except(['show']); // Input Akun Petugas/Siswa
         Route::get('/reports', [TransactionController::class, 'report'])->name('reports.index');

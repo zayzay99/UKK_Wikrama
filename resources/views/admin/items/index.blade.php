@@ -19,18 +19,14 @@
                 <a href="{{ route('items.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Tambah Item</a>
             </div>
 
-            @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                    {{ session('success') }}
-                </div>
-            @endif
+            @include('partials.flash-alerts')
 
             <table class="w-full border-collapse">
                 <thead>
                     <tr class="bg-gray-800 text-white text-left">
                         <th class="p-3">Nama</th>
                         <th class="p-3">Tipe</th>
-                        <th class="p-3">Kode</th>
+                        <th class="p-3">Barcode</th>
                         <th class="p-3">Stok</th>
                         <th class="p-3">Aksi</th>
                     </tr>
@@ -40,9 +36,22 @@
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-3">{{ $item->name }}</td>
                             <td class="p-3 uppercase">{{ $item->type }}</td>
-                            <td class="p-3">{{ $item->code }}</td>
+                            <td class="p-3">
+                                <div class="space-y-2">
+                                    <img
+                                        src="https://bwipjs-api.metafloor.com/?bcid=code128&text={{ urlencode($item->code) }}&scale=2&height=10&includetext"
+                                        alt="Barcode {{ $item->code }}"
+                                        class="h-16 w-56 rounded border bg-white p-1 object-contain"
+                                    >
+                                    <div>
+                                        {{-- <p class="font-semibold text-slate-900">{{ $item->code }}</p> --}}
+                                        <p class="text-xs text-slate-500">Scan barcode ini saat peminjaman</p>
+                                    </div>
+                                </div>
+                            </td>
                             <td class="p-3">{{ $item->stock }}</td>
                             <td class="p-3 flex gap-2">
+                                <a href="{{ route('items.print', $item) }}" target="_blank" class="bg-slate-700 text-white px-3 py-1 rounded text-sm hover:bg-slate-800">Print</a>
                                 <a href="{{ route('items.edit', $item) }}" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">Edit</a>
                                 <form action="{{ route('items.destroy', $item) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus item ini?');">
                                     @csrf

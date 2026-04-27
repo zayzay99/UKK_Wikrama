@@ -13,27 +13,7 @@
             'subtitle' => 'Scan NIS siswa dan barcode barang, lalu transaksi otomatis tercatat ke laporan admin.'
         ])
 
-        @if(session('success'))
-            <div class="mb-4 rounded-lg border border-green-300 bg-green-50 px-4 py-3 text-green-700">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="mb-4 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-red-700">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        @if($errors->any())
-            <div class="mb-4 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-red-700">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('partials.flash-alerts')
 
         <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
             <div class="rounded-xl bg-white p-5 shadow">

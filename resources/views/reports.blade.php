@@ -13,21 +13,7 @@
             'subtitle' => 'Admin dapat mengatur tarif denda per hari untuk telat, rusak, dan hilang.'
         ])
 
-        @if(session('success'))
-            <div class="mb-4 rounded-lg border border-green-300 bg-green-50 px-4 py-3 text-green-700">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if($errors->any())
-            <div class="mb-4 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-red-700">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('partials.flash-alerts')
 
         <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-6">
             <div class="rounded-xl bg-white p-5 shadow">

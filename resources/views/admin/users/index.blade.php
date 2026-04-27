@@ -10,7 +10,7 @@
     <div class="max-w-7xl mx-auto">
         @include('partials.dashboard-header', [
             'title' => 'Data User Sistem',
-            'subtitle' => 'Kelola akun petugas dan siswa untuk proses peminjaman.'
+            'subtitle' => 'Kelola akun admin, petugas, dan siswa untuk proses peminjaman.'
         ])
 
         <div class="bg-white p-8 rounded-lg shadow-md">
@@ -19,11 +19,7 @@
                 <a href="{{ route('users.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Tambah User Baru</a>
             </div>
 
-            @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                </div>
-            @endif
+            @include('partials.flash-alerts')
 
             <table class="w-full border-collapse">
                 <thead>

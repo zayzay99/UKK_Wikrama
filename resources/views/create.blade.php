@@ -10,15 +10,7 @@
     <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Tambah User Baru</h1>
 
-        @if($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('partials.flash-alerts')
 
         <form action="{{ route('users.store') }}" method="POST">
             @csrf
@@ -38,13 +30,14 @@
                 <label for="role" class="block text-gray-700 text-sm font-bold mb-2">Role</label>
                 <select name="role" id="role" class="w-full border p-2 rounded focus:border-blue-500 outline-none" required>
                     <option value="">Pilih Role</option>
+                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                     <option value="petugas" {{ old('role') == 'petugas' ? 'selected' : '' }}>Petugas</option>
                     <option value="siswa" {{ old('role') == 'siswa' ? 'selected' : '' }}>Siswa</option>
                 </select>
             </div>
             <div class="mb-4">
-                <label for="staff_id" class="block text-gray-700 text-sm font-bold mb-2">ID Petugas</label>
-                <input type="text" name="staff_id" id="staff_id" class="w-full border p-2 rounded focus:border-blue-500 outline-none" value="{{ old('staff_id') }}" placeholder="Contoh: PTG-002">
+                <label for="staff_id" class="block text-gray-700 text-sm font-bold mb-2">ID Admin / Petugas</label>
+                <input type="text" name="staff_id" id="staff_id" class="w-full border p-2 rounded focus:border-blue-500 outline-none" value="{{ old('staff_id') }}" placeholder="Contoh: ADM-002 atau PTG-002">
             </div>
             <div class="mb-4">
                 <label for="nis" class="block text-gray-700 text-sm font-bold mb-2">NIS Siswa</label>

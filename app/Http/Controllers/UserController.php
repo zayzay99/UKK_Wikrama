@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::whereIn('role', ['petugas', 'siswa'])->latest()->get();
+        $users = User::whereIn('role', ['admin', 'petugas', 'siswa'])->latest()->get();
         return view('admin.users.index', compact('users'));
     }
 
@@ -34,7 +34,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:petugas,siswa', // Admin tidak bisa dibuat dari sini
+            'role' => 'required|in:admin,petugas,siswa',
             'nis' => 'nullable|string|max:255|unique:users,nis',
             'staff_id' => 'nullable|string|max:255|unique:users,staff_id',
             'rayon' => 'nullable|string|max:255',
@@ -47,12 +47,12 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
             'nis' => $request->role === 'siswa' ? $request->nis : null,
-            'staff_id' => $request->role === 'petugas' ? $request->staff_id : null,
-            'rayon' => $request->rayon,
-            'rombel' => $request->rombel,
+            'staff_id' => in_array($request->role, ['admin', 'petugas'], true) ? $request->staff_id : null,
+            'rayon' => $request->role === 'siswa' ? $request->rayon : null,
+            'rombel' => $request->role === 'siswa' ? $request->rombel : null,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
     }
 
     /**
@@ -72,7 +72,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8',
-            'role' => 'required|in:petugas,siswa',
+            'role' => 'required|in:admin,petugas,siswa',
             'nis' => 'nullable|string|max:255|unique:users,nis,' . $user->id,
             'staff_id' => 'nullable|string|max:255|unique:users,staff_id,' . $user->id,
             'rayon' => 'nullable|string|max:255',
@@ -85,12 +85,12 @@ class UserController extends Controller
             'password' => $request->filled('password') ? Hash::make($request->password) : $user->password,
             'role' => $request->role,
             'nis' => $request->role === 'siswa' ? $request->nis : null,
-            'staff_id' => $request->role === 'petugas' ? $request->staff_id : null,
-            'rayon' => $request->rayon,
-            'rombel' => $request->rombel,
+            'staff_id' => in_array($request->role, ['admin', 'petugas'], true) ? $request->staff_id : null,
+            'rayon' => $request->role === 'siswa' ? $request->rayon : null,
+            'rombel' => $request->role === 'siswa' ? $request->rombel : null,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
     }
 
     /**
@@ -99,6 +99,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
     }
 }

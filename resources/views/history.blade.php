@@ -13,45 +13,18 @@
             'subtitle' => 'Lihat daftar barang yang tersedia lalu ajukan peminjaman ke petugas.'
         ])
 
-        @if(session('success'))
-            <div class="mb-4 rounded-lg border border-green-300 bg-green-50 px-4 py-3 text-green-700">
-                {{ session('success') }}
-            </div>
-        @endif
+        @include('partials.flash-alerts')
 
-        @if(session('error'))
-            <div class="mb-4 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-red-700">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        @if($errors->any())
-            <div class="mb-4 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-red-700">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <div class="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-[320px,1fr]">
-            <div class="bg-gradient-to-r from-blue-700 to-blue-500 p-6 rounded-xl shadow-lg text-white">
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h3 class="text-xl font-bold uppercase">{{ Auth::user()->name }}</h3>
-                        <p class="text-sm opacity-80">NIS {{ Auth::user()->nis ?? '-' }}</p>
-                        <p class="text-sm opacity-80">{{ Auth::user()->rombel }} | {{ Auth::user()->rayon }}</p>
-                    </div>
-                    <div class="bg-white p-1 rounded text-black text-[8px] font-bold">WIKRAMA ID</div>
+        <div class="mb-6 rounded-xl bg-white p-6 shadow">
+            <div class="mb-6 flex flex-col gap-1 border-b border-slate-100 pb-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">{{ Auth::user()->name }}</h3>
+                    <p class="text-sm text-slate-500">NIS {{ Auth::user()->nis ?? '-' }} | {{ Auth::user()->rombel }} | {{ Auth::user()->rayon }}</p>
                 </div>
-                <div class="bg-white p-4 rounded flex justify-center">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ Auth::user()->nis ?? Auth::user()->id }}" alt="QR ID">
-                </div>
-                <p class="text-center mt-2 text-xs">Scan NIS {{ Auth::user()->nis ?? Auth::user()->id }}</p>
+                <span class="inline-flex w-fit rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase text-slate-700">Portal Siswa</span>
             </div>
 
-            <div class="rounded-xl bg-white p-6 shadow">
+            <div>
                 <h3 class="mb-4 text-lg font-bold text-slate-900">Pengajuan Peminjaman</h3>
                 <p class="mb-4 text-sm text-slate-500">Pilih barang yang tersedia, tentukan durasi, lalu kirim pengajuan ke petugas.</p>
                 <form action="{{ route('siswa.requests.store') }}" method="POST" class="grid grid-cols-1 gap-4 md:grid-cols-[1.4fr,0.6fr]">
@@ -79,7 +52,6 @@
                         <button type="submit" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">Ajukan ke Petugas</button>
                     </div>
                 </form>
-            </div>
         </div>
 
         <div class="mb-6 rounded-xl bg-white p-6 shadow">

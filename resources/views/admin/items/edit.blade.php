@@ -16,15 +16,7 @@
         <div class="bg-white p-8 rounded-lg shadow-md">
             <h1 class="text-2xl font-bold text-gray-800 mb-6">Edit Item</h1>
 
-            @if($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            @include('partials.flash-alerts')
 
             <form action="{{ route('items.update', $item) }}" method="POST">
                 @csrf
@@ -41,8 +33,9 @@
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label for="code" class="block text-sm font-bold mb-2">Kode</label>
-                    <input type="text" name="code" id="code" class="w-full border p-2 rounded" value="{{ old('code', $item->code) }}" required>
+                    <label for="code" class="block text-sm font-bold mb-2">Kode Barcode</label>
+                    <input type="text" name="code" id="code" class="w-full border p-2 rounded" value="{{ old('code', $item->code) }}" placeholder="Kosongkan jika ingin tetap memakai kode lama">
+                    <p class="mt-1 text-xs text-slate-500">Biarkan terisi untuk mempertahankan barcode lama, atau ganti manual jika diperlukan.</p>
                 </div>
                 <div class="mb-6">
                     <label for="stock" class="block text-sm font-bold mb-2">Stok</label>
