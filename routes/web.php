@@ -5,11 +5,22 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
 
-// Auth Routes
-Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::redirect('/', '/login');
+
+Route::middleware('guest')->group(function () {
+    // Auth Siswa & Petugas
+    Route::get('/login', [AuthController::class, 'showStudentAuth'])->name('login');
+    Route::post('/login', [AuthController::class, 'studentLogin'])->name('student.login');
+    Route::post('/register', [AuthController::class, 'studentRegister'])->name('student.register');
+    Route::post('/petugas/login', [AuthController::class, 'petugasLogin'])->name('petugas.login.submit');
+
+    // Auth Admin
+    Route::get('/admin/login', [AuthController::class, 'showAdminAuth'])->name('admin.login');
+    Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.submit');
+    Route::post('/admin/register', [AuthController::class, 'adminRegister'])->name('admin.register');
+});
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
