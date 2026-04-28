@@ -18,7 +18,7 @@
 
             @include('partials.flash-alerts')
 
-            <form action="{{ route('items.store') }}" method="POST">
+            <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-bold mb-2">Nama Item</label>
@@ -37,13 +37,38 @@
                     <input type="text" name="code" id="code" class="w-full border p-2 rounded" value="{{ old('code') }}" placeholder="Kosongkan jika ingin generate otomatis">
                     <p class="mt-1 text-xs text-slate-500">Barcode akan dibuat otomatis jika field ini dikosongkan.</p>
                 </div>
-                <div class="mb-6">
+                <div class="mb-4">
                     <label for="stock" class="block text-sm font-bold mb-2">Stok</label>
                     <input type="number" name="stock" id="stock" min="0" class="w-full border p-2 rounded" value="{{ old('stock', 0) }}" required>
+                </div>
+                <div class="mb-6">
+                    <label for="image" class="block text-sm font-bold mb-2">Gambar/Cover</label>
+                    <input type="file" name="image" id="image" class="w-full border p-2 rounded" accept="image/*">
+                    <p class="mt-1 text-xs text-slate-500">Format: JPG, PNG, GIF (Max: 2MB)</p>
+                    <img id="imagePreview" class="mt-3 hidden rounded w-full max-w-xs" alt="Preview">
                 </div>
                 <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded font-bold">Simpan</button>
             </form>
         </div>
     </div>
+
+    <script>
+        // Image preview
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('imagePreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

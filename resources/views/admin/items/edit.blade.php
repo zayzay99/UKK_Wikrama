@@ -18,7 +18,7 @@
 
             @include('partials.flash-alerts')
 
-            <form action="{{ route('items.update', $item) }}" method="POST">
+            <form action="{{ route('items.update', $item) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-4">
@@ -40,6 +40,36 @@
                 <div class="mb-6">
                     <label for="stock" class="block text-sm font-bold mb-2">Stok</label>
                     <input type="number" name="stock" id="stock" min="0" class="w-full border p-2 rounded" value="{{ old('stock', $item->stock) }}" required>
+                </div>
+                <div class="mb-6">
+                    <label for="image" class="block text-sm font-bold mb-2">Gambar/Cover</label>
+                    @if($item->image)
+                        <div class="mb-3">
+
+    <script>
+        // Image preview
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('imagePreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.classList.add('hidden');
+            }
+        });
+    </script>
+                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="rounded w-full max-w-xs">
+                        </div>
+                    @endif
+                    <input type="file" name="image" id="image" class="w-full border p-2 rounded" accept="image/*">
+                    <p class="mt-1 text-xs text-slate-500">Format: JPG, PNG, GIF (Max: 2MB). Kosongkan jika tidak ingin mengubah gambar.</p>
+                    <img id="imagePreview" class="mt-3 hidden rounded w-full max-w-xs" alt="Preview">
                 </div>
                 <button type="submit" class="w-full bg-green-600 text-white py-2 rounded font-bold">Update</button>
             </form>

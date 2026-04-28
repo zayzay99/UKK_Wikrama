@@ -15,6 +15,7 @@ class Item extends Model
         'type',
         'code',
         'stock',
+        'image',
     ];
 
     public function transactions(): HasMany

@@ -122,7 +122,14 @@
                                 data-name="{{ strtolower($item->name) }}"
                             >
                                 <div class="flex items-start justify-between gap-3">
-                                    <div>
+                                    @if($item->image)
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="h-16 w-16 rounded object-cover flex-shrink-0">
+                                    @else
+                                        <div class="h-16 w-16 rounded bg-gray-200 flex items-center justify-center flex-shrink-0 text-gray-400">
+                                            <span class="text-xs">No Image</span>
+                                        </div>
+                                    @endif
+                                    <div class="flex-1">
                                         <p class="font-semibold text-slate-900">{{ $item->name }}</p>
                                         <p class="text-sm text-slate-500">{{ strtoupper($item->type) }} | {{ $item->code }}</p>
                                     </div>

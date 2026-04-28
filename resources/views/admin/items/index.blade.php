@@ -24,6 +24,7 @@
             <table class="w-full border-collapse">
                 <thead>
                     <tr class="bg-gray-800 text-white text-left">
+                        <th class="p-3">Gambar</th>
                         <th class="p-3">Nama</th>
                         <th class="p-3">Tipe</th>
                         <th class="p-3">Barcode</th>
@@ -34,6 +35,15 @@
                 <tbody>
                     @forelse($items as $item)
                         <tr class="border-b hover:bg-gray-50">
+                            <td class="p-3">
+                                @if($item->image)
+                                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="h-12 w-12 rounded object-cover">
+                                @else
+                                    <div class="h-12 w-12 rounded bg-gray-200 flex items-center justify-center text-gray-400">
+                                        <span class="text-xs">No Img</span>
+                                    </div>
+                                @endif
+                            </td>
                             <td class="p-3">{{ $item->name }}</td>
                             <td class="p-3 uppercase">{{ $item->type }}</td>
                             <td class="p-3">
@@ -62,7 +72,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="p-4 text-center text-gray-500">Belum ada item.</td>
+                            <td colspan="6" class="p-4 text-center text-gray-500">Belum ada item.</td>
                         </tr>
                     @endforelse
                 </tbody>

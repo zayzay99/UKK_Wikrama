@@ -59,7 +59,14 @@
             <h3 class="mb-4 text-lg font-bold text-slate-900">Daftar Barang dan Buku yang Bisa Dipinjam</h3>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                 @forelse($availableItems as $item)
-                    <div class="rounded-xl border border-slate-200 p-4">
+                    <div class="rounded-xl border border-slate-200 p-4 flex flex-col">
+                        @if($item->image)
+                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-40 rounded mb-3 object-cover">
+                        @else
+                            <div class="w-full h-40 rounded mb-3 bg-gray-200 flex items-center justify-center text-gray-400">
+                                <span class="text-sm">Belum ada gambar</span>
+                            </div>
+                        @endif
                         <p class="text-xs uppercase tracking-wide text-slate-400">{{ $item->type }}</p>
                         <p class="mt-1 font-semibold text-slate-900">{{ $item->name }}</p>
                         <p class="text-sm text-slate-500">Kode: {{ $item->code }}</p>

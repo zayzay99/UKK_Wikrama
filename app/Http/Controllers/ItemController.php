@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -29,9 +30,18 @@ class ItemController extends Controller
             'type' => 'required|in:buku,alat',
             'code' => 'nullable|string|max:255|unique:items,code',
             'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $validated['code'] = $validated['code'] ?: $this->generateItemCode($validated['type']);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('items', $imageName, 'public');
+            $validated['image'] = 'items/' . $imageName;
+        }
 
         Item::create($validated);
 
@@ -60,9 +70,23 @@ class ItemController extends Controller
             'type' => 'required|in:buku,alat',
             'code' => 'nullable|string|max:255|unique:items,code,' . $item->id,
             'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $validated['code'] = $validated['code'] ?: $item->code ?: $this->generateItemCode($validated['type']);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($item->image && Storage::disk('public')->exists($item->image)) {
+                Storage::disk('public')->delete($item->image);
+            }
+            
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('items', $imageName, 'public');
+            $validated['image'] = 'items/' . $imageName;
+        }
 
         $item->update($validated);
 
