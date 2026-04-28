@@ -48,3 +48,4 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/my-history/request', [TransactionController::class, 'submitBorrowRequest'])->name('siswa.requests.store');
     });
 });
+

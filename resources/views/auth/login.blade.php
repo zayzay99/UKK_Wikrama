@@ -17,14 +17,6 @@
                         Halaman ini dipakai siswa dan petugas untuk masuk dan membuat akun baru. Admin masuk dari halaman terpisah.
                     </p>
                 </div>
-{{-- 
-                <div class="rounded-2xl bg-white/10 p-5 backdrop-blur-sm">
-                    <p class="text-sm font-semibold">Akses internal</p>
-                    <p class="mt-2 text-sm text-blue-50">Untuk admin atau petugas, gunakan halaman login internal.</p>
-                    <a href="{{ route('admin.login') }}" class="mt-4 inline-flex rounded-lg bg-white px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-50">
-                        Buka Login Admin
-                    </a>
-                </div> --}}
             </div>
         </section>
 

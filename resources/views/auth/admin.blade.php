@@ -17,14 +17,6 @@
                         Halaman ini khusus untuk admin. Petugas memiliki halaman login terpisah.
                     </p>
                 </div>
-{{-- 
-                <div class="rounded-2xl border border-slate-700 bg-slate-800/70 p-5">
-                    <p class="text-sm font-semibold text-white">Portal siswa</p>
-                    <p class="mt-2 text-sm text-slate-300">Siswa masuk dan daftar dari halaman login utama.</p>
-                    <a href="{{ route('login') }}" class="mt-4 inline-flex rounded-lg bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300">
-                        Buka Login Siswa
-                    </a>
-                </div> --}}
             </div>
         </section>
 
